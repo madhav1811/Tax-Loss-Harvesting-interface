@@ -7,75 +7,85 @@ interface GainsCardProps {
   gains: CapitalGainsData | null;
   totalLabel: string;
   totalValue: number | null;
-  theme: 'dark' | 'blue';
+  theme: 'light' | 'blue';
   savings?: number;
 }
 
 const GainsCard: React.FC<GainsCardProps> = ({ title, gains, totalLabel, totalValue, theme, savings }) => {
-  const isDark = theme === 'dark';
+  const isBlue = theme === 'blue';
   
   const formatValue = (val: number | null) => {
-    if (val === null) return '₹-';
-    return (val < 0 ? '-' : '') + '₹' + Math.abs(val).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+    if (val === null) return '$ -';
+    const isNegative = val < 0;
+    return (isNegative ? '- ' : '') + '$' + Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 0 });
+  };
+
+  const calculateNet = (profits: number | undefined, losses: number | undefined) => {
+    return (profits ?? 0) - (losses ?? 0);
   };
 
   return (
-    <div style={{
+    <div className="card" style={{
       flex: 1,
-      minWidth: '280px',
-      backgroundColor: isDark ? 'var(--dark-indigo)' : 'var(--brand-blue)',
-      color: 'white',
-      borderRadius: 'var(--radius)',
-      padding: '2rem',
-      position: 'relative',
-      boxShadow: 'var(--shadow-md)',
+      minWidth: '320px',
+      backgroundColor: isBlue ? 'var(--brand-blue)' : 'var(--bg-white)',
+      color: isBlue ? 'white' : 'var(--text-main)',
+      padding: '1.75rem',
       display: 'flex',
       flexDirection: 'column',
-      gap: '1.5rem'
+      gap: '1.25rem',
+      border: isBlue ? 'none' : '1px solid var(--border-color)',
+      boxShadow: 'var(--shadow-md)'
     }}>
-      <h3 style={{ fontSize: '1.125rem', opacity: 0.9 }}>{title}</h3>
+      <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'inherit' }}>{title}</h3>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', fontSize: '0.875rem' }}>
-        <div style={{ opacity: 0.6 }}></div>
-        <div style={{ opacity: 0.6 }}>Short-term</div>
-        <div style={{ opacity: 0.6 }}>Long-term</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(100px, 1.5fr) 1fr 1fr', gap: '0.75rem', fontSize: '1rem' }}>
+        <div></div>
+        <div style={{ textAlign: 'right', opacity: 0.6, fontSize: '0.875rem' }}>Short-term</div>
+        <div style={{ textAlign: 'right', opacity: 0.6, fontSize: '0.875rem' }}>Long-term</div>
 
-        <div>Profits</div>
-        <div style={{ fontWeight: 500 }}>{formatValue(gains?.stcg?.profits ?? null)}</div>
-        <div style={{ fontWeight: 500 }}>{formatValue(gains?.ltcg?.profits ?? null)}</div>
+        <div style={{ opacity: 0.8 }}>Profits</div>
+        <div style={{ textAlign: 'right', fontWeight: 500 }}>{formatValue(gains?.stcg?.profits ?? null)}</div>
+        <div style={{ textAlign: 'right', fontWeight: 500 }}>{formatValue(gains?.ltcg?.profits ?? null)}</div>
 
-        <div>Losses</div>
-        <div style={{ fontWeight: 500 }}>{formatValue(gains?.stcg?.losses ?? null)}</div>
-        <div style={{ fontWeight: 500 }}>{formatValue(gains?.ltcg?.losses ?? null)}</div>
+        <div style={{ opacity: 0.8 }}>Losses</div>
+        <div style={{ textAlign: 'right', fontWeight: 500 }}>{formatValue(-(gains?.stcg?.losses ?? 0))}</div>
+        <div style={{ textAlign: 'right', fontWeight: 500 }}>{formatValue(-(gains?.ltcg?.losses ?? 0))}</div>
 
-        <div style={{ fontWeight: 600 }}>Net Capital Gains</div>
-        <div style={{ fontWeight: 600 }}>{formatValue((gains?.stcg?.profits ?? 0) - (gains?.stcg?.losses ?? 0))}</div>
-        <div style={{ fontWeight: 600 }}>{formatValue((gains?.ltcg?.profits ?? 0) - (gains?.ltcg?.losses ?? 0))}</div>
+        <div style={{ fontWeight: 600, borderTop: '1px solid currentColor', paddingTop: '0.5rem', marginTop: '0.25rem', opacity: 0.9 }}>Net Capital Gains</div>
+        <div style={{ textAlign: 'right', fontWeight: 700, borderTop: '1px solid currentColor', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
+          {formatValue(calculateNet(gains?.stcg?.profits, gains?.stcg?.losses))}
+        </div>
+        <div style={{ textAlign: 'right', fontWeight: 700, borderTop: '1px solid currentColor', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
+          {formatValue(calculateNet(gains?.ltcg?.profits, gains?.ltcg?.losses))}
+        </div>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <div style={{ fontSize: '0.875rem', opacity: 0.7 }}>{totalLabel}</div>
-        <div style={{ fontSize: '1.75rem', fontWeight: 700, marginTop: '0.25rem' }}>
-          {formatValue(totalValue)}
+      <div style={{ marginTop: 'auto', paddingTop: '1.25rem' }}>
+        <div style={{ fontSize: '1.125rem', fontWeight: 600 }}>
+          {totalLabel}: 
+          <span style={{ fontSize: '1.75rem', marginLeft: '0.75rem', fontWeight: 700 }}>
+            {formatValue(totalValue)}
+          </span>
         </div>
       </div>
 
       {savings !== undefined && savings > 0 && (
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           style={{
             marginTop: '1rem',
-            padding: '0.75rem',
+            padding: '1rem',
             backgroundColor: 'rgba(255,255,255,0.15)',
-            borderRadius: '8px',
-            fontSize: '0.875rem',
+            borderRadius: '10px',
+            fontSize: '1rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '10px'
           }}
         >
-          <span style={{ fontSize: '1.1rem' }}>💡</span>
+          <span style={{ fontSize: '1.25rem' }}>🎉</span>
           <span>You are going to save up to: <strong>{formatValue(savings)}</strong></span>
         </motion.div>
       )}
@@ -102,7 +112,7 @@ export const GainsSection: React.FC<GainsSectionProps> = ({ preGains, postGains,
         gains={preGains}
         totalLabel="Realised Capital Gains"
         totalValue={stats?.preRealised ?? null}
-        theme="dark"
+        theme="light"
       />
       <GainsCard 
         title="After Harvesting" 
