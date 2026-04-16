@@ -163,25 +163,61 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
         })}
       </div>
       
-      <div style={{ padding: '1.25rem 1.5rem', backgroundColor: '#fff', borderTop: '1px solid var(--border-color)' }}>
-        <button style={{ 
-          background: 'none', 
-          border: 'none', 
-          color: 'var(--brand-blue)', 
-          fontWeight: 600, 
-          cursor: 'pointer',
-          fontSize: '0.875rem'
-        }}>
+      <div className="table-footer">
+        <button className="view-all-btn">
           View All
         </button>
       </div>
       
       <style>{`
+        .table-footer {
+          padding: 1.25rem 1.5rem;
+          background-color: #fff;
+          border-top: 1px solid var(--border-color);
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+
+        .view-all-btn {
+          background: none;
+          border: none;
+          color: var(--brand-blue);
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 0.875rem;
+          padding: 4px 8px;
+          border-radius: 4px;
+          transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .view-all-btn:hover {
+          background-color: var(--brand-blue-light);
+          text-decoration: underline;
+        }
+
+        .view-all-btn:active {
+          transform: scale(0.98);
+        }
+
         @media (min-width: 769px) {
           .mobile-only { display: none; }
         }
+
         @media (max-width: 768px) {
           .desktop-only { display: none; }
+          .table-footer {
+            justify-content: center;
+            padding: 1rem;
+          }
+          .view-all-btn {
+            font-size: 1rem;
+            width: 100%;
+            padding: 10px;
+            background-color: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+          }
         }
       `}</style>
     </div>
