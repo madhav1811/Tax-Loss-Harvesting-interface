@@ -64,6 +64,8 @@ The application uses a custom hook `useGainsLogic` to handle complex calculation
     *   `Pre-Harvesting`: Sum of all realized gains in the portfolio.
     *   `After-Harvesting`: Recalculated gains taking into account selected losses to offset profits.
     *   `Savings`: `Pre_Realized - Post_Realized`.
+3.  **Official Data Integration**: Uses the exact dataset provided for 25+ holdings and official capital gains targets ($70k+).
+4.  **Functional View Toggles**: Implements a show-more/show-less pattern (initial 6 rows) for optimal desktop and mobile visibility.
 
 ---
 
