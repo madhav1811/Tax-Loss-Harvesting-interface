@@ -1,4 +1,5 @@
 import React from 'react';
+import { Filter } from 'lucide-react';
 import { Holding } from '../types';
 
 interface HoldingsTableProps {
@@ -42,6 +43,13 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
 
   return (
     <div className="card" style={{ overflow: 'hidden' }}>
+      <div className="table-header">
+        <h3 className="table-title">Holdings</h3>
+        <button className="filter-btn">
+          <Filter size={16} />
+          <span>Filter</span>
+        </button>
+      </div>
       {/* Desktop Table View */}
       <div className="desktop-only table-responsive">
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '950px' }}>
@@ -172,6 +180,47 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
       </div>
       
       <style>{`
+        .table-header {
+          padding: 1.25rem 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid var(--border-color);
+          background-color: #fff;
+        }
+
+        .table-title {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: var(--text-main);
+          margin: 0;
+        }
+
+        .filter-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 6px;
+          background-color: #fff;
+          color: var(--text-secondary);
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+          background-color: #F9FAFB;
+          border-color: var(--brand-blue);
+          color: var(--brand-blue);
+        }
+
+        .filter-btn:active {
+          transform: scale(0.97);
+        }
+
         .table-footer {
           padding: 1.25rem 1.5rem;
           background-color: #fff;
@@ -208,6 +257,16 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
 
         @media (max-width: 768px) {
           .desktop-only { display: none; }
+          .table-header {
+            padding: 1rem;
+          }
+          .table-title {
+            font-size: 1rem;
+          }
+          .filter-btn {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+          }
           .table-footer {
             justify-content: center;
             padding: 1rem;
