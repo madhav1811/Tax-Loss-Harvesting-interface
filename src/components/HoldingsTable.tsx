@@ -20,6 +20,15 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
   const displayedHoldings = showAll ? holdings : holdings.slice(0, 6);
   const allSelected = holdings.length > 0 && selectedCoins.size === holdings.length;
 
+  const formatCurrency = (val: number, maximumFractionDigits = 2) => {
+    return val.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits,
+      minimumFractionDigits: Math.min(maximumFractionDigits, 2)
+    });
+  };
+
   const formatCompact = (val: number) => {
     const absVal = Math.abs(val);
     if (absVal >= 1000000) {
