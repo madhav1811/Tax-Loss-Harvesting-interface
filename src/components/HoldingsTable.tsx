@@ -162,16 +162,19 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                 <img src={h.logo} alt={h.coin} style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600 }}>{h.coinName}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }} title={`Full Rate: ${formatCurrency(h.currentPrice, 8)}`}>
-                    {h.coin} • {formatCurrency(h.currentPrice)}/BTC
-                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{h.coin}</div>
                 </div>
-                <div style={{ textAlign: 'right', fontWeight: 700 }} title={formatCurrency(h.totalHolding * h.currentPrice, 8)}>
-                  {formatCurrency(h.totalHolding * h.currentPrice)}
+                <div style={{ textAlign: 'right', fontWeight: 700 }} title={formatCurrency(h.currentPrice, 8)}>
+                  {formatCompact(h.currentPrice)}
                 </div>
               </div>
               
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', backgroundColor: 'rgba(0,0,0,0.02)', padding: '0.75rem', borderRadius: '8px' }}>
+                <div title={`${h.totalHolding} ${h.coin}\nAvg Buy: ${formatCurrency(h.averageBuyPrice, 8)}`}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>HOLDINGS & AVG BUY</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{h.totalHolding.toLocaleString()} {h.coin}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{formatCurrency(h.averageBuyPrice)}/{h.coin}</div>
+                </div>
                 <div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>SHORT-TERM</div>
                   {renderGain(h.stcg.gain, h.stcg.balance, h.coin)}
@@ -179,6 +182,12 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                 <div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>LONG-TERM</div>
                   {renderGain(h.ltcg.gain, h.ltcg.balance, h.coin)}
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px' }}>AMOUNT TO SELL</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>
+                    {isSelected ? `${h.totalHolding.toFixed(4)} ${h.coin}` : '-'}
+                  </div>
                 </div>
               </div>
             </div>
