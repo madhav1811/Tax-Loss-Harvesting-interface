@@ -62,9 +62,6 @@ const App: React.FC = () => {
             stats={stats} 
           />
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '1.25rem' }}>Holdings</h3>
-          </div>
 
           <HoldingsTable 
             holdings={holdings}
