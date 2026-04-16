@@ -20,25 +20,29 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
   const displayedHoldings = showAll ? holdings : holdings.slice(0, 6);
   const allSelected = holdings.length > 0 && selectedCoins.size === holdings.length;
 
-  const formatCurrency = (val: number, decimals = 2) => {
-    return '$' + Math.abs(val).toLocaleString('en-US', { 
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals 
-    });
+  const formatCompact = (val: number) => {
+    const absVal = Math.abs(val);
+    if (absVal >= 1000000) {
+      return (val < 0 ? '-' : '') + '$' + (absVal / 1000000).toLocaleString('en-US', { maximumFractionDigits: 2 }) + 'M';
+    }
+    if (absVal >= 1000) {
+      return (val < 0 ? '-' : '') + '$' + (absVal / 1000).toLocaleString('en-US', { maximumFractionDigits: 2 }) + 'K';
+    }
+    return formatCurrency(val);
   };
 
   const renderGain = (val: number, balance: number, coin: string) => {
     const isPositive = val >= 0;
     const fullGain = (isPositive ? '+' : '-') + formatCurrency(val, 8);
-    const fullBalance = balance.toString() + ' ' + coin;
+    const fullBalance = balance.toLocaleString() + ' ' + coin;
     
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }} title={`${fullGain}\n${fullBalance}`}>
         <span style={{ color: isPositive ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>
-          {isPositive ? '+' : '-'}{formatCurrency(val)}
+          {isPositive ? '+' : '-'}{formatCompact(val)}
         </span>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          {balance.toFixed(3)} {coin}
+          {balance.toLocaleString()} {coin}
         </span>
       </div>
     );
@@ -67,8 +71,8 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                 />
               </th>
               <th style={headerStyle}>Asset</th>
-              <th style={headerStyle}>Holdings <br/><span style={subHeaderStyle}>Current Market Rate</span></th>
-              <th style={headerStyle}>Total Current Value</th>
+              <th style={headerStyle}>Holdings <br/><span style={subHeaderStyle}>Avg Buy Price</span></th>
+              <th style={headerStyle}>Current Price</th>
               <th style={headerStyle}>Short-term</th>
               <th style={headerStyle}>Long-term</th>
               <th style={headerStyle}>Amount to Sell</th>
@@ -93,7 +97,7 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <img src={h.logo} alt={h.coin} style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+                      <img src={h.logo} alt={h.coin} style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontWeight: 600 }}>{h.coinName}</span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{h.coin}</span>
@@ -101,16 +105,16 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                     </div>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }} title={`${h.totalHolding} ${h.coin}\nRate: ${formatCurrency(h.currentPrice, 8)}`}>
-                      <span style={{ fontWeight: 500 }}>{h.totalHolding.toFixed(5)} {h.coin}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }} title={`${h.totalHolding} ${h.coin}\nAvg Buy: ${formatCurrency(h.averageBuyPrice, 8)}`}>
+                      <span style={{ fontWeight: 600 }}>{h.totalHolding.toLocaleString()} {h.coin}</span>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        {formatCurrency(h.currentPrice)}/BTC
+                        {formatCurrency(h.averageBuyPrice)}/{h.coin}
                       </span>
                     </div>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
-                    <span style={{ fontWeight: 600 }} title={formatCurrency(h.totalHolding * h.currentPrice, 8)}>
-                      {formatCurrency(h.totalHolding * h.currentPrice)}
+                    <span style={{ fontWeight: 600 }} title={formatCurrency(h.currentPrice, 8)}>
+                      {formatCompact(h.currentPrice)}
                     </span>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
