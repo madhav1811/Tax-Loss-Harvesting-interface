@@ -14,7 +14,9 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
   onToggle, 
   onToggleAll 
 }) => {
+  const [showAll, setShowAll] = React.useState(false);
   
+  const displayedHoldings = showAll ? holdings : holdings.slice(0, 6);
   const allSelected = holdings.length > 0 && selectedCoins.size === holdings.length;
 
   const formatCurrency = (val: number, decimals = 2) => {
@@ -62,7 +64,7 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {holdings.map((h, i) => {
+            {displayedHoldings.map((h, i) => {
               const isSelected = selectedCoins.has(h.coin);
               return (
                 <tr key={h.coin + i} style={{ 
@@ -120,7 +122,7 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
 
       {/* Mobile Card View */}
       <div className="mobile-only">
-        {holdings.map((h, i) => {
+        {displayedHoldings.map((h, i) => {
           const isSelected = selectedCoins.has(h.coin);
           return (
             <div key={h.coin + i} style={{ 
@@ -164,8 +166,8 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
       </div>
       
       <div className="table-footer">
-        <button className="view-all-btn">
-          View All
+        <button className="view-all-btn" onClick={() => setShowAll(!showAll)}>
+          {showAll ? 'View Less' : 'View All'}
         </button>
       </div>
       
