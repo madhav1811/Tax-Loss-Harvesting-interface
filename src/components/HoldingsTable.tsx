@@ -29,8 +29,11 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
 
   const renderGain = (val: number, balance: number, coin: string) => {
     const isPositive = val >= 0;
+    const fullGain = (isPositive ? '+' : '-') + formatCurrency(val, 8);
+    const fullBalance = balance.toString() + ' ' + coin;
+    
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }} title={`${fullGain}\n${fullBalance}`}>
         <span style={{ color: isPositive ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>
           {isPositive ? '+' : '-'}{formatCurrency(val)}
         </span>
@@ -98,7 +101,7 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                     </div>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }} title={`${h.totalHolding} ${h.coin}\nRate: ${formatCurrency(h.currentPrice, 8)}`}>
                       <span style={{ fontWeight: 500 }}>{h.totalHolding.toFixed(5)} {h.coin}</span>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                         {formatCurrency(h.currentPrice)}/BTC
@@ -106,7 +109,9 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                     </div>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
-                    <span style={{ fontWeight: 600 }}>{formatCurrency(h.totalHolding * h.currentPrice)}</span>
+                    <span style={{ fontWeight: 600 }} title={formatCurrency(h.totalHolding * h.currentPrice, 8)}>
+                      {formatCurrency(h.totalHolding * h.currentPrice)}
+                    </span>
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
                     {renderGain(h.stcg.gain, h.stcg.balance, h.coin)}
@@ -116,7 +121,9 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                   </td>
                   <td style={{ padding: '1rem 1.25rem' }}>
                     {isSelected ? (
-                      <span style={{ fontWeight: 600 }}>{h.totalHolding.toFixed(4)} {h.coin}</span>
+                      <span style={{ fontWeight: 600 }} title={`${h.totalHolding} ${h.coin}`}>
+                        {h.totalHolding.toFixed(4)} {h.coin}
+                      </span>
                     ) : (
                       <span style={{ color: 'var(--text-muted)' }}>-</span>
                     )}
@@ -151,9 +158,11 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({
                 <img src={h.logo} alt={h.coin} style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600 }}>{h.coinName}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{h.coin} • {formatCurrency(h.currentPrice)}/BTC</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }} title={`Full Rate: ${formatCurrency(h.currentPrice, 8)}`}>
+                    {h.coin} • {formatCurrency(h.currentPrice)}/BTC
+                  </div>
                 </div>
-                <div style={{ textAlign: 'right', fontWeight: 700 }}>
+                <div style={{ textAlign: 'right', fontWeight: 700 }} title={formatCurrency(h.totalHolding * h.currentPrice, 8)}>
                   {formatCurrency(h.totalHolding * h.currentPrice)}
                 </div>
               </div>
