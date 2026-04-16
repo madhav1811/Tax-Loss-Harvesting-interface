@@ -6,22 +6,18 @@ export const Header: React.FC = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'space-between',
-      padding: '1.5rem 0',
+      padding: '1.25rem 0',
       borderBottom: '1px solid var(--border-color)',
-      marginBottom: '2rem'
+      marginBottom: '1.5rem',
+      backgroundColor: 'white'
     }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-        <h2 style={{ fontSize: '1.5rem', color: 'var(--brand-blue)' }}>KoinX</h2>
-        <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Tax Harvesting</span>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img 
+          src="https://www.koinx.com/_next/static/media/Logo.5f00da84.svg" 
+          alt="KoinX" 
+          style={{ height: '24px' }} 
+        />
       </div>
-      <a href="#" style={{ 
-        color: 'var(--brand-blue)', 
-        textDecoration: 'none', 
-        fontSize: '0.875rem',
-        fontWeight: 500
-      }}>
-        How it works?
-      </a>
     </header>
   );
 };
