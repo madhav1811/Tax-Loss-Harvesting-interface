@@ -35,33 +35,49 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="container animate-fade-in">
-      <Header />
-      
-      <main>
-        <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Tax Harvesting</h1>
-        </div>
-
-        <NotesBanner />
+    <div className="animate-fade-in" style={{ backgroundColor: 'var(--bg-white)', minHeight: '100vh' }}>
+      <div style={{ borderTop: '2px dotted var(--border-color)', width: '100%' }}></div>
+      <div className="container">
+        <Header />
         
-        <GainsSection 
-          preGains={initialGains} 
-          postGains={afterHarvestingGains} 
-          stats={stats} 
-        />
+        <main>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 700 }}>Tax Harvesting</h1>
+            <a href="#" style={{ 
+              color: 'var(--brand-blue)', 
+              textDecoration: 'none', 
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              borderBottom: '1px solid var(--brand-blue)'
+            }}>
+              How it works?
+            </a>
+          </div>
 
-        <HoldingsTable 
-          holdings={holdings}
-          selectedCoins={selectedCoins}
-          onToggle={toggleSelection}
-          onToggleAll={toggleAll}
-        />
-      </main>
+          <NotesBanner />
+          
+          <GainsSection 
+            preGains={initialGains} 
+            postGains={afterHarvestingGains} 
+            stats={stats} 
+          />
 
-      <footer style={{ marginTop: '4rem', padding: '2rem 0', borderTop: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-        <p>© 2024 KoinX. Build with precision for tax-efficient crypto investing.</p>
-      </footer>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h3 style={{ fontSize: '1.25rem' }}>Holdings</h3>
+          </div>
+
+          <HoldingsTable 
+            holdings={holdings}
+            selectedCoins={selectedCoins}
+            onToggle={toggleSelection}
+            onToggleAll={toggleAll}
+          />
+        </main>
+
+        <footer style={{ marginTop: '4rem', padding: '2rem 0', borderTop: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.875rem', textAlign: 'center' }}>
+          <p>© 2024 KoinX. Built with precision for tax-efficient crypto investing.</p>
+        </footer>
+      </div>
     </div>
   );
 };
